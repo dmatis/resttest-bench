@@ -3,18 +3,17 @@ import ReactDOM from "react-dom";
 import NumberFormat from "react-number-format";
 import Header from "./Header";
 import Table from "./Table";
+import Pagination from "./Pagination";
 
 // TODO:
-// totalCount contains the number of entries across all pages
-// each page by default has up to 10 entries
-// have a while loop that fetches while there are entries still to fetch
 // handle error cases
-// if time, create a pagination component
 
 function App() {
   // Initial data fetch
   const [transactions, setTransactions] = useState([]);
   const [amount, setAmount] = useState(0);
+  const [page, setPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
 
   // This idea was considered for dynamically generating table headers
   // but was dropped because the order of the keys from the API is not necessarily
@@ -35,12 +34,25 @@ function App() {
     return 0;
   }
 
-  useEffect(() => {
-    fetch("https://resttest.bench.co/transactions/1.json")
+  function fetchTransactions(page = 1) {
+    console.log(`fetchTransactionsCalled with page: ${page}`);
+    fetch(`https://resttest.bench.co/transactions/${page}.json`)
       .then((res) => res.json())
       .then((data) => {
-        setTransactions(data.transactions);
+        const { transactions, totalCount } = data;
+        setTransactions(transactions);
+        setPage(page);
+        setTotalCount(totalCount);
       });
+  }
+
+  // PreviousPage * NumElementsPerPage + NumElementsCurrentPage >= totalCount
+  function isLastPage() {
+    return (page - 1) * 10 + transactions.length >= totalCount;
+  }
+
+  useEffect(() => {
+    fetchTransactions(1);
   }, []);
 
   useEffect(() => {
@@ -63,6 +75,11 @@ function App() {
         columns={["Date", "Company", "Ledger", "Amount"]}
         columnHeaders={["Date", "Company", "Ledger", formattedAmount]}
         data={transactions}
+      />
+      <Pagination
+        page={page}
+        isLastPage={isLastPage()}
+        fetchTransactions={fetchTransactions}
       />
     </>
   );

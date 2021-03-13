@@ -21,4 +21,9 @@ npm run dev
 
 Go to: `localhost:1234` in your browser
 
-###
+## Future Things to Implement
+
+- React Suspense to fetch data without delaying initial render
+- CSS Variables
+- Theme switcher
+- Deploy on Netlify
