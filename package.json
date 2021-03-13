@@ -1,0 +1,32 @@
+{
+  "name": "resttest-bench-darren",
+  "version": "1.0.0",
+  "description": "A simple webpage to display data fetched from Bench API",
+  "main": "dist/index.html",
+  "scripts": {
+    "clean": "rm -rf .cache/ dist/",
+    "build": "npm run clean && cross-env NODE_ENV=production parcel build src/index.html --no-source-maps --public-url ./",
+    "dev": "parcel src/index.html",
+    "format": "prettier --write \"src/**/*.{js,jsx}\"",
+    "lint": "eslint \"src/**/*.{js,jsx}\" --quiet"
+  },
+  "author": "Darren Matis-Mei",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^7.22.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.22.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "parcel-bundler": "1.12.3",
+    "prettier": "^2.2.1",
+    "sass": "^1.32.8"
+  }
+}
