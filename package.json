@@ -13,11 +13,16 @@
   "author": "Darren Matis-Mei",
   "license": "ISC",
   "dependencies": {
-    "react": "^0.14 || ^15.0.0-0 || ^16.0.0-0 || ^17.0.0-0",
-    "react-dom": "^0.14 || ^15.0.0-0 || ^16.0.0-0 || ^17.0.0-0",
+    "@babel/plugin-transform-runtime": "^7.13.10",
+    "@babel/runtime": "^7.13.10",
+    "dateformat": "^4.5.1",
+    "react": "*",
+    "react-dom": "*",
+    "react-loader-spinner": "^4.0.0",
     "react-number-format": "^4.4.4"
   },
   "devDependencies": {
+    "@babel/core": "^7.13.10",
     "babel-eslint": "^10.1.0",
     "cross-env": "^7.0.3",
     "eslint": "^7.22.0",

@@ -1,26 +1,22 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import NumberFormat from "react-number-format";
+import dateFormat from "dateformat";
+import Loader from "react-loader-spinner";
 import Header from "./Header";
 import Table from "./Table";
 import Pagination from "./Pagination";
+import ErrorBoundary from "./ErrorBoundary";
+import "./styles/Loader.scss";
 
 function App() {
   const [transactions, setTransactions] = useState([]);
   const [amount, setAmount] = useState(0);
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // This idea was considered for dynamically generating table headers
-  // but was dropped because the order of the keys from the API is not necessarily
-  // how we would want to display it
-  // function getColumns() {
-  //   if (transactions.length > 0) {
-  //     return Object.keys(transactions[0]);
-  //   }
-  // }
-
-  function sumTransactions() {
+  function sumTransactions(transactions) {
     if (transactions.length > 0) {
       return transactions
         .map((t) => parseFloat(t.Amount))
@@ -37,17 +33,49 @@ function App() {
     return response;
   }
 
-  function fetchTransactions(page = 1) {
-    fetch(`https://resttest.bench.co/transactions/${page}.json`)
-      .then(handleErrors)
-      .then((res) => res.json())
-      .then((data) => {
-        const { transactions, totalCount } = data;
-        setTransactions(transactions);
-        setPage(page);
-        setTotalCount(totalCount);
-      })
-      .catch(() => alert("Uh oh! We were unable to fetch the data!"));
+  function formatAmount(amount) {
+    return (
+      <NumberFormat
+        value={amount}
+        displayType={"text"}
+        thousandSeparator={true}
+        decimalScale={2}
+        fixedDecimalScale
+        prefix={"$"}
+      />
+    );
+  }
+
+  function formatTransactions(transactions) {
+    transactions.forEach((t) => {
+      if (t.Date) {
+        t.Date = dateFormat(t.Date, "mmm dS, yyyy");
+      }
+
+      if (t.Amount) {
+        t.Amount = formatAmount(t.Amount);
+      }
+    });
+  }
+
+  async function fetchTransactions(page = 1) {
+    try {
+      setIsLoading(true);
+      let res = await fetch(
+        `https://resttest.bench.co/transactions/${page}.json`
+      );
+
+      const data = await handleErrors(res).json();
+      const { transactions, totalCount } = data;
+      setAmount(sumTransactions(transactions));
+      formatTransactions(transactions);
+      setTransactions(transactions);
+      setPage(page);
+      setTotalCount(totalCount);
+      setIsLoading(false);
+    } catch {
+      alert("Uh oh! We were unable to fetch the data!");
+    }
   }
 
   // PreviousPage * NumElementsPerPage + NumElementsCurrentPage >= totalCount
@@ -55,38 +83,45 @@ function App() {
     return (page - 1) * 10 + transactions.length >= totalCount;
   }
 
+  // Fetch the first page of transactions on initial page load
   useEffect(() => {
     fetchTransactions(1);
   }, []);
 
-  useEffect(() => {
-    setAmount(sumTransactions());
-  }, [transactions]);
-
-  const formattedAmount = (
-    <NumberFormat
-      value={amount}
-      displayType={"text"}
-      thousandSeparator={true}
-      prefix={"$"}
-    />
-  );
-
   return (
     <>
       <Header />
-      <Table
-        columns={["Date", "Company", "Ledger", "Amount"]}
-        columnHeaders={["Date", "Company", "Ledger", formattedAmount]}
-        data={transactions}
-      />
-      <Pagination
-        page={page}
-        isLastPage={isLastPage()}
-        fetchTransactions={fetchTransactions}
-      />
+      {isLoading ? (
+        <Loader
+          className="loader"
+          type="Grid"
+          color="#098b8c"
+          height={80}
+          width={80}
+        />
+      ) : (
+        <>
+          <Table
+            columnHeaders={["Date", "Company", "Ledger", formatAmount(amount)]}
+            data={transactions}
+          />
+          <Pagination
+            page={page}
+            isLastPage={isLastPage()}
+            fetchTransactions={fetchTransactions}
+          />
+        </>
+      )}
     </>
   );
 }
 
-ReactDOM.render(<App />, document.getElementById("root"));
+export default function AppErrorBoundary() {
+  return (
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
+  );
+}
+
+ReactDOM.render(<AppErrorBoundary />, document.getElementById("root"));
