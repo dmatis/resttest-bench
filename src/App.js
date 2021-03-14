@@ -34,16 +34,24 @@ function App() {
     return 0;
   }
 
+  function handleErrors(response) {
+    if (!response.ok) {
+      throw Error(response.statusText);
+    }
+    return response;
+  }
+
   function fetchTransactions(page = 1) {
-    console.log(`fetchTransactionsCalled with page: ${page}`);
     fetch(`https://resttest.bench.co/transactions/${page}.json`)
+      .then(handleErrors)
       .then((res) => res.json())
       .then((data) => {
         const { transactions, totalCount } = data;
         setTransactions(transactions);
         setPage(page);
         setTotalCount(totalCount);
-      });
+      })
+      .catch(() => alert("Uh oh! We were unable to fetch the data!"));
   }
 
   // PreviousPage * NumElementsPerPage + NumElementsCurrentPage >= totalCount
