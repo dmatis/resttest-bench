@@ -2,11 +2,9 @@ import React from "react";
 import "./styles/Table.scss";
 
 function Table({ columns, columnHeaders, data }) {
-  console.log(data);
-
   function _renderTableData(row, id) {
     return (
-      <tr className="table__row" key={id}>
+      <tr tabIndex={0} className="table__row" key={id}>
         {columns.map((col) => (
           <td key={col} className="table__element">
             {row[col]}

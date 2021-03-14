@@ -21,9 +21,11 @@
   &__row {
     border: 1px solid #efefef;
 
-    &:hover {
+    &:hover,
+    &:focus {
       background-color: #f5f5f5;
       color: #098b8c;
+      outline-color: #098b8c;
     }
   }
 }

@@ -5,11 +5,7 @@ import Header from "./Header";
 import Table from "./Table";
 import Pagination from "./Pagination";
 
-// TODO:
-// handle error cases
-
 function App() {
-  // Initial data fetch
   const [transactions, setTransactions] = useState([]);
   const [amount, setAmount] = useState(0);
   const [page, setPage] = useState(1);
