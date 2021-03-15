@@ -30,6 +30,7 @@ Open `dist/index.html` in your browser
 ## To Develop
 
 ```
+yarn
 yarn dev
 ```
 
