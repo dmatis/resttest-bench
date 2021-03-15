@@ -1,7 +1,17 @@
 @import "variables";
 
 .pagination {
-  margin-top: $margin-button;
+  margin: $margin-pagination;
+
+  &__button {
+    background-color: $color-primary;
+    color: $color-header-font;
+
+    &:disabled {
+      background-color: $color-secondary;
+      color: black;
+    }
+  }
 
   &__button,
   &__page {

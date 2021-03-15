@@ -8,6 +8,16 @@ A simple webpage to display data fetched from Bench API
 
 [Deployed on Netlify](https://resttest-bench-darren-matis-mei.netlify.app)
 
+## Features
+
+- React app error handling via ErrorBoundary
+- Modal to display Transaction Details
+- Pagination
+- Loading spinner while pages are fetched
+- Keyboard navigation
+- Lazy loading Component for faster initial render
+- CSS variables
+
 ## To Start
 
 ```

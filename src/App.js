@@ -90,7 +90,7 @@ function App() {
 
   return (
     <>
-      <Header />
+      <Header title="Bench Test" />
       {isLoading ? (
         <Loader
           className="loader"
