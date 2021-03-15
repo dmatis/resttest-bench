@@ -4,7 +4,8 @@ import "./styles/Modal.scss";
 
 const modalRoot = document.getElementById("modal");
 
-const Modal = ({ setShowModal, children }) => {
+function Modal({ setShowModal, children }) {
+  // Require a reference to the element so that we can clean up generated markup later in modalRoot.removeChild()
   const elRef = useRef(null);
 
   if (!elRef.current) {
@@ -42,6 +43,6 @@ const Modal = ({ setShowModal, children }) => {
     </div>,
     elRef.current
   );
-};
+}
 
 export default Modal;

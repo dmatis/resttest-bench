@@ -1,3 +1,5 @@
+@import "variables";
+
 #modal {
   background-color: rgba(0, 0, 0, 0.9);
   position: fixed;
@@ -17,8 +19,7 @@
 
 #modal > div {
   background-color: white;
-  max-width: 1200px;
-  min-width: 500px;
+  max-width: 60rem;
   padding: 15px;
   border-radius: 5px;
   text-align: center;
@@ -30,8 +31,8 @@
   }
 
   &__button {
-    padding: 0.5rem 1rem;
+    padding: $padding-button;
     justify-content: flex-end;
-    margin: 1rem;
+    margin: $margin-button;
   }
 }

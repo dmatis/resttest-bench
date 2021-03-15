@@ -1,36 +1,38 @@
+@import "variables";
+
 .table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #fafaf8;
+  background-color: $color-table-background;
   box-shadow: 1px 2px 2px #ccc;
 
   &__element {
     padding: 0.75rem;
 
     &--light {
-      color: #9c9b9e;
+      color: $color-table-element-light;
     }
   }
 
   &__header {
-    background-color: white;
+    background-color: $color-table-header;
     text-align: left;
-    border: 1px solid #efefef;
+    border: 1px solid $color-table-border;
 
     & > .table__element {
-      color: #098b8c; // TODO: make this a variable
+      color: $color-primary;
     }
   }
 
   &__row {
-    border: 1px solid #efefef;
+    border: 1px solid $color-table-border;
     cursor: pointer;
 
     &:hover,
     &:focus {
-      background-color: #f5f5f5;
-      color: #098b8c;
-      outline-color: #098b8c;
+      background-color: $color-table-border;
+      color: $color-primary;
+      outline-color: $color-primary;
     }
   }
 }
